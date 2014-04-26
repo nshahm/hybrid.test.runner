@@ -1,1 +1,6 @@
 language: java
+
+notifications:
+  email:
+    - ghazni.nattarshah@gmail.com
+    - mahendran.rajagopal@objectfrontier.com
