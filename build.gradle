@@ -47,3 +47,7 @@ jar {
         manifest.attributes provider: 'gradle'
         from (file("$buildDir/output/classes"), file("$buildDir/tmp/jar"))
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
