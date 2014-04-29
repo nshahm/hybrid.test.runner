@@ -4,7 +4,9 @@
 package com.ofs.hybrid.test.runner.api;
 
 /**
- * @author Guest1
+ * @author Ghazni Nattarshah
+ * @date Apr28 2014
+ * @since hybrid.test.runner 1.0
  *
  */
 public class AutomatedTestCase {
