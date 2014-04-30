@@ -3,7 +3,7 @@
  */
 package com.hybrid.test.runner.util;
 
-import com.ofs.hybrid.test.runner.reader.excel.ObjectRepositoryReader;
+import com.ofs.hybrid.test.runner.reader.impl.ObjectRepositoryReader;
 
 /**
  * @author Ghazni Nattarshah

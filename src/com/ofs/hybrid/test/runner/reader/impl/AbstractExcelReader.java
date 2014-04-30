@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ofs.hybrid.test.runner.reader.excel;
+package com.ofs.hybrid.test.runner.reader.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +21,7 @@ import com.ofs.hybrid.test.runner.reader.Reader;
 
 /**
  * @author Ghazni Nattarshah
- * @date Apr28 2014
+ * @date Apr 28 2014
  * @since hybrid.test.runner 1.0
  *
  * Abstract class that has base excel sheet reader.
@@ -66,18 +66,18 @@ public abstract class AbstractExcelReader implements Reader {
 		}
 
 		try (FileInputStream fis = new FileInputStream(file)) {
-
+		
 			// Get the workbook instance for XLS file
-		    if (filePath.toLowerCase().endsWith(XLSX)){
-	               workbook = new XSSFWorkbook(fis);
-	        } else if(filePath.toLowerCase().endsWith(XLS)){
-	               workbook = new HSSFWorkbook(fis);
-	        } else {
-	        	throw new IllegalArgumentException("Not an excel (XLS | XLSX) file type.");
-	        }
+		if (filePath.toLowerCase().endsWith(XLSX)){
+			workbook = new XSSFWorkbook(fis);
+		} else if(filePath.toLowerCase().endsWith(XLS)){
+			workbook = new HSSFWorkbook(fis);
+		} else {
+			throw new IllegalArgumentException("Not an excel (XLS | XLSX) file type.");
+		}
 
-		    //By default, select the first sheet after workbook loads.
-		    selectSheetByIndex(0);
+		//By default, select the first sheet after workbook loads.
+		selectSheetByIndex(0);
 
 		} catch (FileNotFoundException e) {
 			System.out.println("Unable to read the input file from '"+ filePath + "'" + e.getMessage());
