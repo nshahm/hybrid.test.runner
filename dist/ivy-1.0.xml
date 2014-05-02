@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-  <info organisation="" module="hybrid.test.runner" revision="1.0" status="integration" publication="20140501224817">
+  <info organisation="" module="hybrid.test.runner" revision="1.0" status="integration" publication="20140502005102">
     <description/>
   </info>
   <configurations>
@@ -23,5 +23,6 @@
     <dependency org="org.seleniumhq.selenium" name="selenium-java" rev="2.41.0" conf="compile-&gt;default"/>
     <dependency org="org.seleniumhq.selenium" name="selenium-server" rev="2.41.0" conf="compile-&gt;default"/>
     <dependency org="org.apache.xmlbeans" name="xmlbeans" rev="2.6.0" conf="compile-&gt;default"/>
+    <dependency org="commons-cli" name="commons-cli" rev="1.2" conf="compile-&gt;default"/>
   </dependencies>
 </ivy-module>

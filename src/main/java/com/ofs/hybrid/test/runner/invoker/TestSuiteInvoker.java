@@ -16,6 +16,7 @@ import com.ofs.hybrid.test.runner.context.Global;
 import com.ofs.hybrid.test.runner.reader.impl.I18NReader;
 import com.ofs.hybrid.test.runner.reader.impl.ObjectRepositoryReader;
 import com.ofs.hybrid.test.runner.reader.impl.PropertyReader;
+import com.ofs.hybrid.test.runner.utils.FileUtils;
 
 /**
  * @author Ghazni Nattarshah
@@ -53,10 +54,13 @@ public class TestSuiteInvoker {
 		System.out.println(testSuitesFiles);
 	}
 
+	/**
+	 * Get all the test suite files.
+	 */
 	private File[] lookupTestSuites() {
 
-		//File file = FileUtils.loadFile(appDir, Constants.)
-		return null;
+		File[] files = FileUtils.getTestSuiteFiles(appDir, Constants.DIR_TESTSUITES);
+		return files;
 	}
 
 	/**

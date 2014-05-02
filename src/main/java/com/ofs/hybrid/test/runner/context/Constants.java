@@ -12,12 +12,21 @@ package com.ofs.hybrid.test.runner.context;
  */
 public class Constants {
 
+	// directory
+	public static final String DIR_TESTSUITES = "testsuites";
+	public static final String DIR_TESTCASES  = "testcases";
+	public static final String DIR_RESULTS    = "result";
+
 	// filenames
 	public static final String FILENAME_TESTENV              = "testenv.properties";
 	public static final String FILENAME_OBJECT_REPO          = "object-repo.xls";
 	public static final String FILENAME_INTERNATIONALIZATION = "internationalization.xls";
 	public static final String FILENAME_CONFIG 			     = "config.properties";
 
+	// prefix
+	public static final String PREFIX_TESTSUITE = "TS";
+	public static final String PREFIX_TESTCASE  = "TC";
+	
 	//testenv property names
 	public static final String DEFAULT_HOST_NAME   = "default.host.machine";
 	public static final String DEFAULT_HOST_OS     = "default.host.machine.os";

@@ -20,6 +20,10 @@ public class Launcher {
 
 	public static void main(String[] args) {
 
+//		Options options = new Options();
+//		
+//		CommandLine parser = new DefaultCom();
+		
 		Params params = new Params();
 		params.setBasedir(args[0]);
 
