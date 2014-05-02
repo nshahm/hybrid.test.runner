@@ -2,8 +2,11 @@ language: java
 
 notifications:
   email:
-    - ghazni.nattarshah@gmail.com
-    - mahendran.rajagopal@objectfrontier.com
+    recipients:
+      - ghazni.nattarshah@gmail.com
+      - mahendran.rajagopal@objectfrontier.com
+    on_success: always
+    on_failure: always
     
 cache:
   directories:
