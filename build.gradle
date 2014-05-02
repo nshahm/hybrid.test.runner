@@ -1,23 +1,15 @@
-
 apply plugin: 'java'
-apply plugin: 'maven'
+apply plugin: 'eclipse'
 
-sourceCompatibility=1.7
-version='1.0'
-    
+sourceCompatibility = 1.7
+version = '1.0'
+
 repositories {
-	mavenCentral()
-}
-
-uploadArchives {
-    repositories {
-       flatDir {
-           dirs 'dist'
-       }
-    }
+    mavenCentral()
 }
 
 dependencies {
+
 	compile 'dom4j:dom4j:1.5.1'
 	compile 'junit:junit:4.11'
 	compile 'org.apache.poi:ooxml-schemas:1.1'
@@ -28,15 +20,12 @@ dependencies {
 	compile 'org.apache.xmlbeans:xmlbeans:2.6.0'
 }
 
-sources {
-	main {
-		java {
-			srcDirs = ['src']
-		}
-		test {
-			srcDirs = ['test']
-		}
-	}
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'dist'
+       }
+    }
 }
 
 compileJava {
@@ -44,8 +33,9 @@ compileJava {
 }
 
 jar {
-        manifest.attributes provider: 'gradle'
-        from (file("$buildDir/output/classes"), file("$buildDir/tmp/jar"))
+	manifest.writeTo("$buildDir/output/classes/META-INF/MANIFEST.MF")
+    manifest.attributes 'Implementation-Title': 'hybrid.test.runner', 'Implementation-Version': version
+    from (file("$buildDir/output/classes"), file("$buildDir/tmp/jar"))
 }
 
 task wrapper(type: Wrapper) {
