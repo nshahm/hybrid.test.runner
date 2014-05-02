@@ -32,7 +32,7 @@ public class Verifyfields {
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
 
-  @Test
+//  @Test
   public void testVerifyfields() throws Exception {
     driver.get(baseUrl + "/");
     driver.findElement(By.cssSelector("input[type=text][name=firstname]")).clear();
@@ -96,7 +96,7 @@ public class Verifyfields {
       verificationErrors.append(e.toString());
     }
     try {
-      assertEquals("It’s free and always will be.", driver.findElement(By.xpath("//div[@id='content']/div/div/div/div/div[2]/h2")).getText());
+      assertEquals("It���s free and always will be.", driver.findElement(By.xpath("//div[@id='content']/div/div/div/div/div[2]/h2")).getText());
     } catch (Error e) {
       verificationErrors.append(e.toString());
     }
@@ -126,7 +126,7 @@ public class Verifyfields {
   }
 
   
-  @After
+//  @After
   public void tearDown() throws Exception {
     driver.quit();
     String verificationErrorString = verificationErrors.toString();

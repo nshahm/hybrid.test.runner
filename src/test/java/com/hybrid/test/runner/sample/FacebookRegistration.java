@@ -16,14 +16,14 @@ public class FacebookRegistration {
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
 
-  @Before
+  //@Before
   public void setUp() throws Exception {
     driver = new FirefoxDriver();
     baseUrl = "https://www.facebook.com/";
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
 
-  @Test
+  //@Test
   public void testFacebookRegistration() throws Exception {
     driver.get(baseUrl + "/");
     driver.findElement(By.cssSelector("input[name=firstname][type=text]")).clear();

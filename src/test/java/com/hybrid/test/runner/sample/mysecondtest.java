@@ -15,7 +15,7 @@ public class mysecondtest {
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
 
-  @Before
+  //@Before
   public void setUp() throws Exception {
     driver = new FirefoxDriver();
     baseUrl = "https://accounts.google.com/";
@@ -23,7 +23,7 @@ public class mysecondtest {
   }
 
   
-  @Test
+  //@Test
   public void testMy() throws Exception {	
     Navigate("http://gmail.com");
     ConfigureText("vkr.capsin","Email"); 

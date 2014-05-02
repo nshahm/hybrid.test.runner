@@ -18,6 +18,8 @@ dependencies {
 	compile 'org.seleniumhq.selenium:selenium-java:2.41.0'
 	compile 'org.seleniumhq.selenium:selenium-server:2.41.0'
 	compile 'org.apache.xmlbeans:xmlbeans:2.6.0'
+
+	testCompile files (file ("$buildDir/output/classes"))
 }
 
 uploadArchives {
@@ -31,6 +33,10 @@ uploadArchives {
 compileJava {
 	destinationDir file("$buildDir/output/classes")
 }
+
+/*testCompile {
+	files(file("$buildDir/output/classes"))
+}*/
 
 jar {
 	manifest.writeTo("$buildDir/output/classes/META-INF/MANIFEST.MF")

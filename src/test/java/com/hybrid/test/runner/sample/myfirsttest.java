@@ -21,14 +21,14 @@ public class myfirsttest {
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
 
-  @Before
+  //@Before
   public void setUp() throws Exception {
     driver = new FirefoxDriver();
     baseUrl = "https://accounts.google.com/";
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
 
-  @Test
+  //@Test
   public void testMy() throws Exception {	
     driver.get("http://gmail.com");
     driver.findElement(By.id("Email")).clear();
@@ -44,7 +44,7 @@ public class myfirsttest {
     driver.findElement(By.id("gb_71")).click();
   }
 
-  @After
+  //@After
   public void tearDown() throws Exception {
     driver.quit();
     String verificationErrorString = verificationErrors.toString();

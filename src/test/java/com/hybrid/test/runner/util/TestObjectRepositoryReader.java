@@ -3,6 +3,11 @@
  */
 package com.hybrid.test.runner.util;
 
+import org.junit.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.ofs.hybrid.test.runner.reader.impl.ObjectRepositoryReader;
 
 /**
@@ -10,21 +15,21 @@ import com.ofs.hybrid.test.runner.reader.impl.ObjectRepositoryReader;
  * @date Apr28 2014
  * @since hybrid.test.runner 1.0
  *
- * Model class that holds row data.
  */ 
 public class TestObjectRepositoryReader {
 
-	/**
-	 * @param args
-	 * @throws Exception 
-	 */
-	public static void main(String[] args) throws Exception {
+	private final static String filePath = "testfiles/facebook/object-repo.xls";
+	private ObjectRepositoryReader reader;
+	
+	@Before
+	public void setUp() throws Exception {
+		reader = new ObjectRepositoryReader(filePath);
+	}
+	
+	@Test 
+	public void testRead() throws Exception {
 
-		String filePath = "testfiles/facebook/object-repo.xls";
-
-		ObjectRepositoryReader reader = new ObjectRepositoryReader(filePath);
-		while (reader.hasNextRow()) {
-			System.out.println(reader.nextRow());
-		}
+		Assert.assertTrue(reader.hasNextRow());
+		Assert.assertNotNull(reader.nextRow());
 	}
 }
