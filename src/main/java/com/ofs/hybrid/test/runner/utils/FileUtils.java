@@ -7,8 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import com.ofs.hybrid.test.runner.context.Constants;
-
 /**
  * @author Ghazni Nattarshah
  * @date Apr 29 2014
@@ -54,19 +52,17 @@ public class FileUtils {
 	/**
 	 * Helper method used to get the test suite files in sequential order.
 	 * 
-	 * @param appDir - Base application directory
-	 * @param dirTestsuites - Test suite directory
+	 * @param baseDir - Base application directory
+	 * @param testFilePrefix - Test suite directory
 	 * @return list of files.
 	 */
-	public static File[] getTestSuiteFiles(String appDir, String dirTestsuites) {
+	public static File[] getTestFiles(String baseDir, String testFilePrefix) {
 
 		File[] files = null;
 		try {
 
-			File file = loadFile(appDir, dirTestsuites);
-			files = file.listFiles( (dir, name) -> {
-				return name.startsWith(Constants.PREFIX_TESTSUITE);	
-			});	
+			File file = loadFile(baseDir);
+			files = file.listFiles((dir, name) -> name.startsWith(testFilePrefix));
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

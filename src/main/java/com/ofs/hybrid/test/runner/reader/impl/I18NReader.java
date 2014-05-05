@@ -3,8 +3,6 @@
  */
 package com.ofs.hybrid.test.runner.reader.impl;
 
-import java.io.File;
-
 import com.ofs.hybrid.test.runner.api.RowData;
 import com.ofs.hybrid.test.runner.api.reader.I18NRow;
 
@@ -25,7 +23,7 @@ public class I18NReader extends AbstractExcelReader {
 	 * @throws Exception - if any error during the file load.
 	 */
 	public I18NReader(String filePath) throws Exception {
-		super(I18NRow.class, filePath);
+		super(filePath);
 	}
 
 	/**
@@ -36,7 +34,17 @@ public class I18NReader extends AbstractExcelReader {
 	 * @throws Exception - if any error during the file load.
 	 */
 	public I18NReader(String baseDir, String fileName) throws Exception {
-		super(I18NRow.class, baseDir + File.separatorChar + fileName);
+		super(baseDir, fileName);
+	}
+
+	/**
+	 * Defines the sheet metadata.
+	 * 
+	 * Use addSheetData(..) method to add metadata for sheets.
+	 */
+	@Override
+	protected void defineSheetData() {
+		addSheetData(1, "", I18NRow.class);
 	}
 
 	/**
@@ -47,7 +55,7 @@ public class I18NReader extends AbstractExcelReader {
 	 * @param rowData - RowData instance where this value needs to set.
 	 */
 	@Override
-	protected void setRowData(int cellIndex, String cellData, RowData rowData) {
+	protected void setRowData(int sheetIndex, int cellIndex, String cellData, RowData rowData) {
 
 		I18NRow row = (I18NRow) rowData;
 		switch (cellIndex) {

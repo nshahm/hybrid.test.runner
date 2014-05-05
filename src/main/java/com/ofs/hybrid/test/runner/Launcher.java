@@ -42,9 +42,7 @@ public class Launcher {
 
 			List<Property> configProps = new PropertyReader(params.getBasedir(), Constants.FILENAME_CONFIG).getProperties();
 			for (Property prop : configProps) {
-
-				TestSuiteInvoker runner = new TestSuiteInvoker();
-				runner.invoke(prop);
+				TestSuiteInvoker.invoke(prop);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

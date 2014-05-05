@@ -7,16 +7,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.ofs.hybrid.test.runner.api.RowData;
+import com.ofs.hybrid.test.runner.api.SheetData;
 import com.ofs.hybrid.test.runner.reader.Reader;
 
 /**
@@ -32,25 +33,81 @@ public abstract class AbstractExcelReader implements Reader {
 	private static final String XLS  = "xls";
 	private static final String XLSX = "xlsx";
 
-	private Class <?> rowClass;
+	private boolean skipColumnHeader = true;
 	
 	private Workbook workbook;
-	private Sheet sheet;
 
-	private Iterator<Row> rowIterator;
+	private List<SheetData> sheets;
 
+	private SheetData currentSheet;
+	
 	/**
-	 * Constructor initialize the rowClass and load the excel file.
+	 * Instantiate the excel reader and load the file.
 	 * 
-	 * @param rowClass <code>RowClass</code> type
 	 * @param filePath excel file location.
 	 * 
 	 * @throws Exception during file load
 	 */
-	public AbstractExcelReader(Class<?> rowClass, String filePath) throws Exception {
+	public AbstractExcelReader(String filePath) throws Exception {
 
-		this.rowClass = rowClass;
+		//defines the sheet metadata
+		defineSheetData();
+
+		// loads the actual file
 		load(filePath);
+	}
+
+	/**
+	 * Instantiate the excel reader and load the file
+	 * 
+	 * @param file - File Instance
+	 */
+	public AbstractExcelReader(File file) throws Exception {
+
+		//defines the sheet metadata
+		defineSheetData();
+
+		// loads the actual file
+		load(file);
+	}
+
+	/**
+	 * Instantiate the excel reader and load the file
+	 * 
+	 * @param baseDir -  Parent directory
+	 * @param fileName - file Name
+	 * @throws Exception
+	 */
+	public AbstractExcelReader(String baseDir, String fileName) throws Exception {
+		this (new File(baseDir, fileName));
+	}
+
+	/**
+	 * Loads the excel workbook.
+	 * @param file
+	 */
+	private void load(File file) {
+
+		String fileName = file.getName();
+		try (FileInputStream fis = new FileInputStream(file)) {
+
+			// Get the workbook instance for XLS file
+			if (fileName.toLowerCase().endsWith(XLSX)){
+				workbook = new XSSFWorkbook(fis);
+			} else if(fileName.toLowerCase().endsWith(XLS)){
+				workbook = new HSSFWorkbook(fis);
+			} else {
+				throw new IllegalArgumentException("Not an excel (XLS | XLSX) file type.");
+			}
+
+			//By default, select the first sheet after workbook loads.
+			switchSheetByIndex(1, false);
+
+		} catch (FileNotFoundException e) {
+			System.out.println("Unable to read the input file from '"+ fileName + "'" + e.getMessage());
+		} catch (IOException e) {
+			System.err.println("Unexpected Exception" + e.getMessage());
+		}
 	}
 
 	/**
@@ -59,31 +116,13 @@ public abstract class AbstractExcelReader implements Reader {
 	 * @param filePath Input file path (.xls | xlsx)
 	 */
 	public void load(String filePath) throws Exception {
-		
+
 		File file = new File(filePath);
 		if (!file.exists()) {
 			throw new FileNotFoundException("Input file does not exist [" + filePath + "]");
 		}
 
-		try (FileInputStream fis = new FileInputStream(file)) {
-		
-			// Get the workbook instance for XLS file
-		if (filePath.toLowerCase().endsWith(XLSX)){
-			workbook = new XSSFWorkbook(fis);
-		} else if(filePath.toLowerCase().endsWith(XLS)){
-			workbook = new HSSFWorkbook(fis);
-		} else {
-			throw new IllegalArgumentException("Not an excel (XLS | XLSX) file type.");
-		}
-
-		//By default, select the first sheet after workbook loads.
-		selectSheetByIndex(0);
-
-		} catch (FileNotFoundException e) {
-			System.out.println("Unable to read the input file from '"+ filePath + "'" + e.getMessage());
-		} catch (IOException e) {
-			System.err.println("Unexpected Exception" + e.getMessage());
-		}
+		load(file);
 	}
 
 	/**
@@ -93,19 +132,23 @@ public abstract class AbstractExcelReader implements Reader {
 	 */
 	public boolean hasNextRow() {
 		
-		if (rowClass == null) {
-			throw new RuntimeException("Please set the RowClass before using nextRow method.");
-		}
-
-		if (sheet == null) {
+		if (currentSheet == null) {
 			throw new RuntimeException("No sheet selected.");
 		}
 
-		if (rowIterator == null) {
-			rowIterator = sheet.iterator();
+		if (currentSheet.getRowClass() == null) {
+			throw new RuntimeException("Please set the RowClass before using nextRow method.");
+		}
+	
+		if (currentSheet.getIterator() == null) {
+
+			currentSheet.setIterator(currentSheet.getSheet().iterator());
+			if (skipColumnHeader) {
+				currentSheet.getIterator().next();
+			}
 		}
 
-		return rowIterator.hasNext();
+		return currentSheet.getIterator().hasNext();
 	}
 
 	/**
@@ -116,22 +159,18 @@ public abstract class AbstractExcelReader implements Reader {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public RowData nextRow() 
+	public RowData nextRow()
 	throws InstantiationException, IllegalAccessException {
 
-		RowData rowData = null;
-		if (rowIterator.hasNext()) {
+		final RowData rowData = (RowData) currentSheet.getRowClass().newInstance();
+		if (currentSheet.getIterator().hasNext()) {
 
-			rowData = (RowData) rowClass.newInstance();
-			Row row = rowIterator.next();
-			Iterator<Cell> cellIterator = row.cellIterator();
-			while (cellIterator.hasNext()) {
-
-				Cell cell = cellIterator.next();
-				setRowData(cell.getColumnIndex(), getCellValue(cell), rowData);
-			}
+			Row row = currentSheet.getIterator().next();
+			row.cellIterator().forEachRemaining((c) -> {
+				setRowData(currentSheet.getIndex() + 1, c.getColumnIndex(), getCellValue(c), rowData); 
+			});
 		}
-		
+
 		return rowData;
 	}
 
@@ -140,23 +179,29 @@ public abstract class AbstractExcelReader implements Reader {
 	 * 
 	 * @param sheetName 
 	 */
-	public void selectSheetByName(String sheetName) {
+	public void switchSheetByName(String sheetName, boolean resetPointer) {
 
 		checkIfWorkbookloaded();
-		sheet = workbook.getSheet(sheetName);
-		rowIterator = null; // resets the row iterator.
-	}
 
+		currentSheet = (SheetData) sheets.stream().filter((p) -> sheetName.equals(p.getName())).findAny().get();
+		currentSheet.setSheet(workbook.getSheet(sheetName));
+
+		resetSheetPointer(resetPointer);
+	}
+	
 	/**
 	 * Selects the workbook sheet by index
 	 * 
 	 * @param sheetIndex - zero based. 
 	 */
-	public void selectSheetByIndex(int sheetIndex) {
+	public void switchSheetByIndex(int sheetIndex, boolean resetPointer) {
 
 		checkIfWorkbookloaded();
-		sheet = workbook.getSheetAt(sheetIndex);
-		rowIterator = null; // resets the row iterator.
+
+		currentSheet = sheets.stream().filter((p) -> sheetIndex - 1 == p.getIndex()).findAny().get();
+		currentSheet.setSheet(workbook.getSheetAt(sheetIndex - 1));
+
+		resetSheetPointer(resetPointer);
 	}
 
 	/**
@@ -173,7 +218,7 @@ public abstract class AbstractExcelReader implements Reader {
 	 * Helper method to get the cell value based on the cell type
 	 * 
 	 * @param cell Input cell
-	 * @return Cell value as <code>Obejct</code>
+	 * @return Cell value as <code>String</code>
 	 */
 	private static String getCellValue(Cell cell) {
 
@@ -188,11 +233,52 @@ public abstract class AbstractExcelReader implements Reader {
 	}
 
 	/**
+	 * Reset the row pointer to first row of the sheet.
+	 * 
+	 * @param resetPointer - Reset the pointer to first row of sheet if true, otherwise false.
+	 */
+	private void resetSheetPointer(boolean resetPointer) {
+
+		if (resetPointer) {
+			currentSheet.setIterator(currentSheet.getSheet().iterator());
+		}
+	}
+
+	/**
+	 * Adds the sheet metadata
+	 *
+	 * @param name - Name of an excel sheet
+	 * @param index - 1 based index where it is stored
+	 * @param rowClass - Row Class type.
+	 */
+	protected void addSheetData(int index, String name, Class<? extends RowData> rowClass) {
+
+		if (sheets == null) {
+			sheets = new ArrayList<>();
+		}
+		sheets.add(new SheetData(name, index - 1, rowClass));
+	}
+
+	/**
+	 * Enables the sheet to skip the first row which is typically be a column header.
+	 * 
+	 * @param skip - true if the column header needs to be skipped, otherwise false.
+	 */
+	protected void skipColumnHeader(boolean skip) {
+		skipColumnHeader = skip;
+	}
+
+	/**
 	 * Used to set the values in RowData instance.
 	 * 
 	 * @param cellIndex - Index of the cell.
 	 * @param cellData - Value of the cell
 	 * @param rowData - RowData instance where this value needs to set.
 	 */
-	protected abstract void setRowData(int cellIndex, String cellData, RowData rowData);
+	protected abstract void setRowData(int sheetIndex, int cellIndex, String cellData, RowData rowData);
+
+	/**
+	 * Used to define the workbook metadata for individual sheets.
+	 */
+	protected abstract void defineSheetData();
 }

@@ -3,8 +3,6 @@
  */
 package com.ofs.hybrid.test.runner.reader.impl;
 
-import java.io.File;
-
 import com.ofs.hybrid.test.runner.api.RowData;
 import com.ofs.hybrid.test.runner.api.reader.ObjectRepositoryRow;
 
@@ -25,7 +23,7 @@ public class ObjectRepositoryReader extends AbstractExcelReader {
 	 * @throws Exception - if any error during the file load.
 	 */
 	public ObjectRepositoryReader(String filePath) throws Exception {
-		super(ObjectRepositoryRow.class, filePath);
+		super(filePath);
 	}
 
 	/**
@@ -36,7 +34,15 @@ public class ObjectRepositoryReader extends AbstractExcelReader {
 	 * @throws Exception - if any error during the file load.
 	 */
 	public ObjectRepositoryReader(String baseDir, String fileName) throws Exception {
-		super(ObjectRepositoryRow.class, baseDir + File.separatorChar + fileName);
+		super(baseDir, fileName);
+	}
+
+	/**
+	 * Defines the sheet metadata.
+	 */
+	@Override
+	protected void defineSheetData() {
+		addSheetData(1, "object.repository", ObjectRepositoryRow.class);
 	}
 
 	/**
@@ -47,7 +53,7 @@ public class ObjectRepositoryReader extends AbstractExcelReader {
 	 * @param rowData - RowData instance where this value needs to set.
 	 */
 	@Override
-	protected void setRowData(int cellIndex, String cellData, RowData rowData) {
+	protected void setRowData(int sheetIndex, int cellIndex, String cellData, RowData rowData) {
 
 		ObjectRepositoryRow row = (ObjectRepositoryRow) rowData;
 		switch (cellIndex) {
