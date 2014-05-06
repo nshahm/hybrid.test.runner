@@ -14,12 +14,21 @@ package com.ofs.hybrid.test.runner;
 public class Params {
 
 	private String basedir;
-
+	private String version;
+	
 	public String getBasedir() {
 		return basedir;
 	}
 
 	public void setBasedir(String basedir) {
 		this.basedir = basedir;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 }

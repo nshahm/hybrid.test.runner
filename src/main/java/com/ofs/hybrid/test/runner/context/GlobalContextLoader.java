@@ -3,11 +3,10 @@
  */
 package com.ofs.hybrid.test.runner.context;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ofs.hybrid.test.runner.api.Property;
+import com.ofs.hybrid.test.runner.Params;
 import com.ofs.hybrid.test.runner.api.TestEnv;
 import com.ofs.hybrid.test.runner.api.reader.I18NRow;
 import com.ofs.hybrid.test.runner.api.reader.ObjectRepositoryRow;
@@ -29,18 +28,13 @@ import com.ofs.hybrid.test.runner.reader.impl.PropertyReader;
  */ 
 public class GlobalContextLoader {
 
-	@SuppressWarnings("unused")
-	private Property app;
-	private String appDir;
-
 	/**
 	 * Loads the test suite dependencies and start the test suite execution.
 	 * @param prop - Application property
 	 */
-	public void load(Property prop) {
+	public static void load(Params params) {
 
-		app = prop;
-		appDir = Global.getBaseDir() + File.separatorChar + prop.getValue();
+		GlobalContext.init(params);
 
 		// Loads the test environment
 		loadTestEnv();
@@ -55,9 +49,9 @@ public class GlobalContextLoader {
 	/**
 	 * Loads the application test environment
 	 */
-	private void loadTestEnv() {
+	private static void loadTestEnv() {
 
-		PropertyReader reader = new PropertyReader(appDir, Constants.FILENAME_TESTENV);
+		PropertyReader reader = new PropertyReader(GlobalContext.getAppDir(), Constants.FILENAME_TESTENV);
 
 		TestEnv env = new TestEnv();
 		env.setDefaultHostName(reader.getProperty(Constants.DEFAULT_HOST_NAME));
@@ -70,17 +64,17 @@ public class GlobalContextLoader {
 		env.setEmailSender(reader.getProperty(Constants.EMAIL_SENDER));
 
 		// sets to global context.
-		Global.setTestEnv(env);
+		GlobalContext.setTestEnv(env);
 	}
 
 	/**
 	 * Loads the object repository
 	 */
-	private void loadObjectRepository() {
+	private static void loadObjectRepository() {
 
 		try {
 
-			ObjectRepositoryReader reader = new ObjectRepositoryReader(appDir, Constants.FILENAME_OBJECT_REPO);
+			ObjectRepositoryReader reader = new ObjectRepositoryReader(GlobalContext.getAppDir(), Constants.FILENAME_OBJECT_REPO);
 			Map<String, ObjectRepositoryRow> objectRepository = new HashMap<>();
 			while (reader.hasNextRow()) {
 
@@ -89,7 +83,7 @@ public class GlobalContextLoader {
 			}
 
 			//sets to global context.
-			Global.setObjectRepository(objectRepository);
+			GlobalContext.setObjectRepository(objectRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -98,11 +92,11 @@ public class GlobalContextLoader {
 	/**
 	 * Loads the internationalization.
 	 */
-	private void loadInternationalization() {
+	private static void loadInternationalization() {
 
 		try {
 
-			I18NReader reader = new I18NReader(appDir, Constants.FILENAME_INTERNATIONALIZATION);
+			I18NReader reader = new I18NReader(GlobalContext.getAppDir(), Constants.FILENAME_INTERNATIONALIZATION);
 			Map<String, I18NRow> i18N = new HashMap<>();
 			while (reader.hasNextRow()) {
 
@@ -111,7 +105,7 @@ public class GlobalContextLoader {
 			}
 
 			//sets to global context.
-			Global.setI18N(i18N);
+			GlobalContext.setI18N(i18N);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -6,12 +6,11 @@ package com.ofs.hybrid.test.runner.invoker;
 import java.io.File;
 import java.util.Arrays;
 
-import com.ofs.hybrid.test.runner.api.Property;
 import com.ofs.hybrid.test.runner.api.TestCaseInfo;
 import com.ofs.hybrid.test.runner.api.TestCaseResult;
 import com.ofs.hybrid.test.runner.api.TestSuite;
 import com.ofs.hybrid.test.runner.context.Constants;
-import com.ofs.hybrid.test.runner.context.Global;
+import com.ofs.hybrid.test.runner.context.GlobalContext;
 import com.ofs.hybrid.test.runner.reader.impl.TestSuiteReader;
 import com.ofs.hybrid.test.runner.utils.FileUtils;
 
@@ -25,29 +24,27 @@ import com.ofs.hybrid.test.runner.utils.FileUtils;
  */ 
 public class TestSuiteInvoker {
 
-	@SuppressWarnings("unused")
-	private static Property app;
-	private static String appDir;
-
 	/**
 	 * Loads the test suite dependencies and start the test suite execution.
 	 * @param prop - Application property
 	 */
-	public static void invoke(Property prop) {
+	public static void invoke() {
 
-		app = prop;
-		appDir = new StringBuffer()
-				 .append(Global.getBaseDir())
-				 .append(File.separatorChar)
-				 .append(prop.getValue())
-				 .append(File.separatorChar)
-				 .append(Constants.DIR_TESTSUITES)
-				 .toString();
+		String testSuiteDir = new StringBuffer()
+			.append(GlobalContext.getAppDir())
+			.append(File.separatorChar)
+			.append(Constants.DIR_TESTSUITES)
+			.toString();
 
-		File[] testSuitesFiles = FileUtils.getTestFiles(appDir, Constants.PREFIX_TESTSUITE);
+		File[] testSuitesFiles = FileUtils.getTestFiles(testSuiteDir, Constants.PREFIX_TESTSUITE);
 		Arrays.stream(testSuitesFiles).forEach((f) -> runTestSuite(f));
 	}
 
+	/**
+	 * Run the given test suite file.
+	 * 
+	 * @param testSuiteFile
+	 */
 	private static void runTestSuite(File testSuiteFile) {
 
 		//Reads the testsuite
@@ -70,6 +67,11 @@ public class TestSuiteInvoker {
 		}
 	}
 
+	/**
+	 * Process the test suite result
+	 * 
+	 * @param result
+	 */
 	private static void processResult(TestCaseResult result) {
 		
 	}

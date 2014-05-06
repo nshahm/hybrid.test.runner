@@ -19,7 +19,9 @@ dependencies {
 	compile 'org.seleniumhq.selenium:selenium-java:2.41.0'
 	compile 'org.seleniumhq.selenium:selenium-server:2.41.0'
 	compile 'org.apache.xmlbeans:xmlbeans:2.6.0'
+	compile 'org.slf4j:slf4j-api:1.6.1'
 	compile 'commons-cli:commons-cli:1.2'
+	compile 'xml-apis:xml-apis:2.0.2'
 
 	testCompile files (file ("$buildDir/output/classes"))
 }

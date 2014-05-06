@@ -3,8 +3,10 @@
  */
 package com.ofs.hybrid.test.runner.context;
 
+import java.io.File;
 import java.util.Map;
 
+import com.ofs.hybrid.test.runner.Params;
 import com.ofs.hybrid.test.runner.api.TestEnv;
 import com.ofs.hybrid.test.runner.api.reader.I18NRow;
 import com.ofs.hybrid.test.runner.api.reader.ObjectRepositoryRow;
@@ -17,7 +19,7 @@ import com.ofs.hybrid.test.runner.api.reader.ObjectRepositoryRow;
  * Global context object that carries execution data through out the session.
  * 
  */
-public class Global {
+public class GlobalContext {
 
 	private static ThreadLocal<GlobalSession> ctx;
 
@@ -26,11 +28,19 @@ public class Global {
 	 * 
 	 * @param baseDir - Base directory of the test files
 	 */
-	public static void init(String baseDir) {
+	public static void init(Params params) {
 
 		ctx = new ThreadLocal<>();
-		Global.GlobalSession gs =  new Global().new GlobalSession();
-		gs.BASE_DIR = baseDir;
+		GlobalContext.GlobalSession gs =  new GlobalContext().new GlobalSession();
+		gs.BASE_DIR = params.getBasedir();
+		gs.VERSION  = params.getVersion();
+		gs.APP_DIR  = params.getBasedir();
+
+		if (params.getVersion() != null) {
+
+			gs.APP_DIR += File.separatorChar;
+			gs.APP_DIR += params.getVersion();
+		}
 		ctx.set(gs);
 	}
 
@@ -40,6 +50,22 @@ public class Global {
 	 */
 	public static String getBaseDir() {
 		return ctx.get().BASE_DIR;
+	}
+	
+	/**
+	 * Gets the app directory
+	 * @return Application directory
+	 */
+	public static String getAppDir() {
+		return ctx.get().APP_DIR;
+	}
+	
+	/**
+	 * Gets the test application version
+	 * @return Application Version
+	 */
+	public static String getVersion() {
+		return ctx.get().VERSION;
 	}
 
 	/**
@@ -103,6 +129,8 @@ public class Global {
 	private class GlobalSession {
 
 		public String BASE_DIR;
+		public String VERSION;
+		public String APP_DIR;
 		public TestEnv TEST_ENV;
 		public Map<String, ObjectRepositoryRow> OBJECT_REPO_MAP;
 		public Map<String, I18NRow> I18N;
