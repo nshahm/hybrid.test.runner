@@ -12,6 +12,10 @@ package com.ofs.hybrid.test.runner.context;
  */
 public class Constants {
 
+	// supported file extensions
+	public static final String XLS  = "xls";
+	public static final String XLSX = "xlsx";
+	
 	// directory
 	public static final String DIR_TESTSUITES = "testsuites";
 	public static final String DIR_TESTCASES  = "testcases";

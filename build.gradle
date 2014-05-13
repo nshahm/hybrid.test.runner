@@ -26,6 +26,11 @@ dependencies {
 	testCompile files (file ("$buildDir/output/classes"))
 }
 
+task copylibs(type: Copy) {
+    into "$buildDir/bundle/lib"
+    from configurations.runtime
+}
+
 uploadArchives {
     repositories {
        flatDir {

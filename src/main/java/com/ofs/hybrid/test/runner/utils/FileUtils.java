@@ -6,6 +6,10 @@ package com.ofs.hybrid.test.runner.utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * @author Ghazni Nattarshah
@@ -64,6 +68,24 @@ public class FileUtils {
 			File file = loadFile(baseDir);
 			files = file.listFiles((dir, name) -> name.startsWith(testFilePrefix));
 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return files;
+	}
+
+	/**
+	 * Helper method to get all the files under the given directory which ends with
+	 * 
+	 * @param chDir
+	 * @return
+	 */
+	public static File[] getFiles(String baseDir, String chDir, String... fileExt) {
+
+		File[] files = null;
+		List<String> supportedFileExt = Arrays.asList(fileExt);
+		try {
+			files = loadFile(baseDir, chDir).listFiles((dir, name) -> supportedFileExt.contains(FilenameUtils.getExtension(name)));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

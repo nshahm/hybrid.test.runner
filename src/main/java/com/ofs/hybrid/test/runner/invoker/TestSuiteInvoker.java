@@ -6,6 +6,8 @@ package com.ofs.hybrid.test.runner.invoker;
 import java.io.File;
 import java.util.Arrays;
 
+import org.apache.commons.io.FilenameUtils;
+
 import com.ofs.hybrid.test.runner.api.TestCaseInfo;
 import com.ofs.hybrid.test.runner.api.TestCaseResult;
 import com.ofs.hybrid.test.runner.api.TestSuite;
@@ -54,13 +56,11 @@ public class TestSuiteInvoker {
 			TestSuiteReader reader = new TestSuiteReader(testSuiteFile);
 			testSuite = reader.getTestSuite();
 
-			// Invoke the test case with ready status sorted by execution order
-			final String location = testSuite.getLocation();
 			testSuite.getTestCaseInfoList()
   					 .stream()
 					 .filter(f -> TestCaseInfo.STATUS_READY.equals(f.getStatus()))
 					 .sorted((tc1, tc2) -> tc1.getExecOrder() - tc2.getExecOrder())
-					 .forEach((tc) -> processResult(TestCaseInvoker.invoke(location, tc)));
+					 .forEach((tc) -> processResult(TestCaseInvoker.invoke(FilenameUtils.getBaseName(testSuiteFile.getName()), tc)));
 
 		} catch (Exception e) {
 			e.printStackTrace();

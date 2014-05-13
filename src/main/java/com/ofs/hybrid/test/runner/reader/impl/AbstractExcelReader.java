@@ -18,6 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.ofs.hybrid.test.runner.api.RowData;
 import com.ofs.hybrid.test.runner.api.SheetData;
+import com.ofs.hybrid.test.runner.context.Constants;
 import com.ofs.hybrid.test.runner.reader.Reader;
 
 /**
@@ -29,9 +30,6 @@ import com.ofs.hybrid.test.runner.reader.Reader;
  * 
  */
 public abstract class AbstractExcelReader implements Reader {
-
-	private static final String XLS  = "xls";
-	private static final String XLSX = "xlsx";
 
 	private boolean skipColumnHeader = true;
 	
@@ -92,9 +90,9 @@ public abstract class AbstractExcelReader implements Reader {
 		try (FileInputStream fis = new FileInputStream(file)) {
 
 			// Get the workbook instance for XLS file
-			if (fileName.toLowerCase().endsWith(XLSX)){
+			if (fileName.toLowerCase().endsWith(Constants.XLSX)){
 				workbook = new XSSFWorkbook(fis);
-			} else if(fileName.toLowerCase().endsWith(XLS)){
+			} else if(fileName.toLowerCase().endsWith(Constants.XLS)){
 				workbook = new HSSFWorkbook(fis);
 			} else {
 				throw new IllegalArgumentException("Not an excel (XLS | XLSX) file type.");
