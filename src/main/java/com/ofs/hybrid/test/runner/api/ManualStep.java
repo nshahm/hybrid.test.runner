@@ -13,15 +13,15 @@ package com.ofs.hybrid.test.runner.api;
  */
 public class ManualStep implements RowData {
 
-	private String stepId;
+	private Integer stepId;
 	private String designStep;
 	private String designDesc;
 	private String expectedResult;
 
-	public String getStepId() {
+	public Integer getStepId() {
 		return stepId;
 	}
-	public void setStepId(String stepId) {
+	public void setStepId(Integer stepId) {
 		this.stepId = stepId;
 	}
 	public String getDesignStep() {

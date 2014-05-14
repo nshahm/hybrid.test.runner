@@ -100,7 +100,7 @@ public class TestCaseReader extends AbstractExcelReader {
 			ManualStep row = (ManualStep) rowData;
 			switch (cellIndex) {
 
-				case 0: row.setStepId(cellData); break;
+				case 0: row.setStepId(toInteger(cellData)); break;
 				case 1: row.setDesignStep(cellData); break;
 				case 2: row.setDesignDesc(cellData); break;
 				case 3: row.setExpectedResult(cellData);
@@ -110,7 +110,7 @@ public class TestCaseReader extends AbstractExcelReader {
 			AutoStep row = (AutoStep) rowData;
 			switch (cellIndex) {
 			
-				case 0: row.setStepId(cellData); break;
+				case 0: row.setStepId(toInteger(cellData)); break;
 				case 1: row.setObject(cellData); break;
 				case 2: row.setConrol(cellData); break;
 				case 3: row.setAction(cellData); break;

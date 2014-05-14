@@ -12,7 +12,7 @@ package com.ofs.hybrid.test.runner.api;
  */
 public class AutoStep implements RowData {
 
-	private String stepId;
+	private Integer stepId;
 	private String object;
 	private String control;
 	private String action;
@@ -20,10 +20,10 @@ public class AutoStep implements RowData {
 	private String expectedObject;
 	private String expectedAction;
 
-	public String getStepId() {
+	public Integer getStepId() {
 		return stepId;
 	}
-	public void setStepId(String stepId) {
+	public void setStepId(Integer stepId) {
 		this.stepId = stepId;
 	}
 	public String getObject() {

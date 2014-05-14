@@ -258,6 +258,26 @@ public abstract class AbstractExcelReader implements Reader {
 	}
 
 	/**
+	 * Helper method used to convert string to <code>Integer</code>.
+	 * 
+	 * @param value - Input value of string type
+	 * @return Integer value of given string
+	 */
+	protected Integer toInteger(String value) {
+		return toFloat(value).intValue();
+	}
+
+	/**
+	 * Helper method used to convert string to <code>Float</code>.
+	 * 
+	 * @param value - Input value of string type
+	 * @return Float value of given string
+	 */
+	protected Float toFloat(String value) {
+		return Float.valueOf(value);
+	}
+
+	/**
 	 * Enables the sheet to skip the first row which is typically be a column header.
 	 * 
 	 * @param skip - true if the column header needs to be skipped, otherwise false.
