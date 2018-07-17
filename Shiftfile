@@ -24,7 +24,7 @@ IMAGE "openjdk:7"
 #}
 
 "shell", "checking out the project" {
-	- git clone https://github.com/nshahm/hybrid.test.runner.git
+	- git clone https://github.com/nshahm/hybrid.test.runner.git ~/code
 }
 
 "shell", "Building the project" {
