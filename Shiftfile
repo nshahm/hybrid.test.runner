@@ -17,8 +17,16 @@ IMAGE "openjdk:7"
 # elasticshift - Name of the company who created this plugin
 # vcs - Name of the plugin
 #
-"elasticshift/vcs", "Checking out the project" {
-	url (proj_url)
-  branch "master"
-  directory "~/code"
+#"elasticshift/vcs", "Checking out the project" {
+#	url (proj_url)
+#  branch "master"
+#  directory "~/code"
+#}
+
+"shell", "checking out the project" {
+	- git clone https://github.com/nshahm/hybrid.test.runner.git
+}
+
+"shell", "Building the project" {
+	- ./gradlew clean build
 }
