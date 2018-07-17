@@ -23,6 +23,10 @@ IMAGE "openjdk:7"
 #  directory "~/code"
 #}
 
+CACHE {
+	- ~/.gradle
+}
+
 "shell", "checking out the project" {
 	- git clone https://github.com/nshahm/hybrid.test.runner.git ~/code
 }
