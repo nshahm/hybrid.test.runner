@@ -28,7 +28,7 @@ CACHE {
 }
 
 "shell", "checking out the project" {
-	- git clone https://github.com/nshahm/hybrid.test.runner.git ~/code
+	- git clone https://github.com/nshahm/hybrid.test.runner.git
 }
 
 "shell", "Building the project" {
