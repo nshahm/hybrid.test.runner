@@ -37,13 +37,13 @@ CACHE {
 	- sleep 5
 }
 
-"shell", "Building the project" {
+"shell", "echo 2" {
 	// PARALLEL:echogroup
 	- echo "fan2"
 	- sleep 5
 }
 
-"shell", "Building the project" {
+"shell", "echo 3" {
 	// PARALLEL:echogroup
 	- echo "fan3"
 	- sleep 5
