@@ -31,6 +31,26 @@ CACHE {
 	- git clone https://github.com/nshahm/hybrid.test.runner.git ~/code
 }
 
+"shell", "echo 1" {
+	// PARALLEL:echogroup
+	- echo "fan1"
+	- sleep 5
+}
+
+"shell", "Building the project" {
+	// PARALLEL:echogroup
+	- echo "fan2"
+	- sleep 5
+}
+
+"shell", "Building the project" {
+	// PARALLEL:echogroup
+	- echo "fan3"
+	- sleep 5
+}
+
 "shell", "Building the project" {
 	- ./gradlew clean build
 }
+
+
