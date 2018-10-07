@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  checkout:
+    docker:
+      - image: circleci/java
+    steps:
+      - checkout
+      - run: git clone https://github.com/nshahm/hybrid.test.runner.git
+  build:
+    docker:
+      - image: circleci/java
+    steps:
+      - build the project
+      - run: ./gradlew clean build
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - checkout
+      - build:
+          requires:
+            - checkout
