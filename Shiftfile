@@ -10,7 +10,10 @@ WORKDIR "~/code"
 VAR proj_url "https://github.com/nshahm/hybrid.test.runner.git"
 
 # The container where the build is going to happen
-IMAGE "openjdk:7" 
+IMAGE [ 
+	"openjdk:7", 
+	"openjdk:8"
+]
 
 #
 # Name of the plugin, description (this can be optional)
